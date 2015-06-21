@@ -12,8 +12,6 @@
 */
 Route::get('/home', 'PagesController@index');
 Route::get('', 'PagesController@index');
-Route::post('getRedditTitles','CurlController@getRedditTitles');
 Route::post('redditImages','CurlController@redditImages');
 Route::post('redditTextAndImage','CurlController@redditTextAndImage');
 Route::post('redditText','CurlController@redditText');
-Route::post('getRedditTitlesandImages','CurlController@getRedditTitlesandImages');

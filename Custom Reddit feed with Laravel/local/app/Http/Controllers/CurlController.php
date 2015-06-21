@@ -32,19 +32,18 @@ class CurlController extends Controller
         $url = 'http://www.reddit.com/r/'.$data['url'];
         $crawler = $client->request('GET', $url);
         $client->getClient()->setDefaultOption('config/curl/'.CURLOPT_TIMEOUT, 60);
-        $crawler->filter('.title > a.title')->each(function ($node) {
-            echo '<div class="row">';
-            if ($node->text() != 'Please copy/paste the relevant text from your source in the comments (+ a note on verifiable titles)'){
-                echo '<div class="col-md-12">';
-                echo '<img src="'.$node->attr('href').'.gif" class="img-responsive"/>';
-                echo '<label>'.$node->text().'</label>';
-                echo '</div>';
-            }
-            echo '</div>';
+        $crawler->filter('.entry')->each(function ($node) {
+            echo '<div class="row"><div class="col-md-12">';
+            $node->filter('.comments')->each(function ($commentNode) {
+                echo '<a  href="'.$commentNode->attr('href').'" target="_blank">';
+            });
+            $node->filter('.title > a.title')->each(function ($titleNode) {
+                if ($titleNode->text() != 'Please copy/paste the relevant text from your source in the comments (+ a note on verifiable titles)'){
+                    echo '<h3>'.$titleNode->text().'</h3></a><hr/>';
+                    echo '<img src="'.$titleNode->attr('href').'.gif" class="img-responsive"/>';
+                }
+            });
+            echo '</div></div>';
         });
-    }
-    protected function redditTextAndImage()
-    {$data = $request->input();
-
     }
 }
